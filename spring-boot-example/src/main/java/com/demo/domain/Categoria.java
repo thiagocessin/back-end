@@ -1,12 +1,15 @@
 package com.demo.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Categoria implements Serializable {// serializable - objetos podem ser convertidos para array de bytes
@@ -18,6 +21,10 @@ public class Categoria implements Serializable {// serializable - objetos podem 
 	private Integer id;
 
 	private String nome;
+	
+	//mapeado pelo jointable
+	@ManyToMany(mappedBy = "categorias")
+	private List<Produto> produtos = new ArrayList<>();
 
 	public Categoria() {
 		super();
@@ -28,7 +35,8 @@ public class Categoria implements Serializable {// serializable - objetos podem 
 		this.id = id;
 		this.nome = nome;
 	}
-
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -50,6 +58,15 @@ public class Categoria implements Serializable {// serializable - objetos podem 
 		return Objects.hash(id);
 	}
 
+	
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -61,5 +78,6 @@ public class Categoria implements Serializable {// serializable - objetos podem 
 		Categoria other = (Categoria) obj;
 		return Objects.equals(id, other.id);
 	}
+
 
 }

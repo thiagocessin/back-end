@@ -84,7 +84,7 @@ public class CursomcApplication implements CommandLineRunner{
 		//carregaCategoriasProdutos();
 		//carregarCidadesEstados();
 		//carregarClienteEnderecosTelefones();
-		carregarPedido();
+		//carregarPedido();
 	}
 	
 	
@@ -109,7 +109,6 @@ public class CursomcApplication implements CommandLineRunner{
 
 		cli1.getPedidos().addAll(Arrays.asList(ped1,ped2));
 		
-		clienteRepository.saveAll(Arrays.asList(cli1));
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pgto1, pgto2));
 		

@@ -12,7 +12,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.demo.domain.enums.EstadoPagamento;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)//estratégia para gerar a tabela no banco
@@ -24,7 +24,7 @@ public abstract class Pagamento implements Serializable {
 	private Integer id;
 	private Integer estado;
 	
-	@JsonBackReference
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name="pedido_id")
 	@MapsId//id do pagamento será o mesmo do pedido

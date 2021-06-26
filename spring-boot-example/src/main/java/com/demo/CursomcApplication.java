@@ -1,5 +1,7 @@
 package com.demo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -13,15 +15,24 @@ import com.demo.domain.Cidade;
 import com.demo.domain.Cliente;
 import com.demo.domain.Endereco;
 import com.demo.domain.Estado;
+import com.demo.domain.Pagamento;
+import com.demo.domain.PagamentoComBoleto;
+import com.demo.domain.PagamentoComCartao;
+import com.demo.domain.Pedido;
 import com.demo.domain.Produto;
+import com.demo.domain.enums.EstadoPagamento;
 import com.demo.domain.enums.TipoCliente;
 import com.demo.repositories.CategoriaRepository;
 import com.demo.repositories.CidadeRepository;
 import com.demo.repositories.ClienteRepository;
 import com.demo.repositories.EnderecoRepository;
 import com.demo.repositories.EstadoRepository;
+import com.demo.repositories.PagamentoRepository;
+import com.demo.repositories.PedidoRepository;
 import com.demo.repositories.ProdutoRepository;
 import com.demo.services.CidadeService;
+import com.demo.services.ClienteService;
+import com.demo.services.EnderecoService;
 
 @SpringBootApplication
 public class CursomcApplication implements CommandLineRunner{
@@ -42,11 +53,22 @@ public class CursomcApplication implements CommandLineRunner{
 	private CidadeService cidadeService;
 	
 	@Autowired
+	private ClienteService clienteService;
+	
+	@Autowired
+	EnderecoService enderecoService;
+	
+	@Autowired
 	private ClienteRepository clienteRepository;
 	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
 	
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 	
 	
 	
@@ -62,6 +84,37 @@ public class CursomcApplication implements CommandLineRunner{
 		//carregaCategoriasProdutos();
 		//carregarCidadesEstados();
 		//carregarClienteEnderecosTelefones();
+		carregarPedido();
+	}
+	
+	
+	public void carregarPedido() throws ParseException {
+		
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		Cliente cli1 = clienteService.find(1);
+		Endereco e1 = enderecoService.find(1);
+		Endereco e2 = enderecoService.find(2);
+		
+		Pedido ped1 = new Pedido(sdf.parse("30/09/2020 10:32"),cli1,e1);
+		
+		Pedido ped2 = new Pedido(sdf.parse("10/10/2020 17:23"),cli1,e2);
+		
+		
+		Pagamento pgto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pgto1);
+		
+		Pagamento pgto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2,sdf.parse("20/10/2020 00:00"),null);
+		ped2.setPagamento(pgto2);
+
+		cli1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+		
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pgto1, pgto2));
+		
+		
+		
 	}
 	
 	

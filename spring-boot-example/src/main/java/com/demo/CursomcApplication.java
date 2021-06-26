@@ -15,6 +15,7 @@ import com.demo.domain.Cidade;
 import com.demo.domain.Cliente;
 import com.demo.domain.Endereco;
 import com.demo.domain.Estado;
+import com.demo.domain.ItemPedido;
 import com.demo.domain.Pagamento;
 import com.demo.domain.PagamentoComBoleto;
 import com.demo.domain.PagamentoComCartao;
@@ -27,12 +28,15 @@ import com.demo.repositories.CidadeRepository;
 import com.demo.repositories.ClienteRepository;
 import com.demo.repositories.EnderecoRepository;
 import com.demo.repositories.EstadoRepository;
+import com.demo.repositories.ItemPedidoRepository;
 import com.demo.repositories.PagamentoRepository;
 import com.demo.repositories.PedidoRepository;
 import com.demo.repositories.ProdutoRepository;
 import com.demo.services.CidadeService;
 import com.demo.services.ClienteService;
 import com.demo.services.EnderecoService;
+import com.demo.services.PedidoService;
+import com.demo.services.ProdutoService;
 
 @SpringBootApplication
 public class CursomcApplication implements CommandLineRunner{
@@ -56,7 +60,13 @@ public class CursomcApplication implements CommandLineRunner{
 	private ClienteService clienteService;
 	
 	@Autowired
-	EnderecoService enderecoService;
+	private EnderecoService enderecoService;
+	
+	@Autowired
+	private PedidoService pedidoService;
+	
+	@Autowired
+	private ProdutoService produtoService;
 	
 	@Autowired
 	private ClienteRepository clienteRepository;
@@ -69,6 +79,10 @@ public class CursomcApplication implements CommandLineRunner{
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
+	
 	
 	
 	
@@ -85,8 +99,37 @@ public class CursomcApplication implements CommandLineRunner{
 		//carregarCidadesEstados();
 		//carregarClienteEnderecosTelefones();
 		//carregarPedido();
+		//carregarItemPedido();
 	}
 	
+	
+	public void carregarItemPedido() {
+		
+		Pedido ped1 = pedidoService.find(17);
+		Pedido ped2 = pedidoService.find(18);
+		
+		Produto p1 = produtoService.find(1);
+		Produto p2 = produtoService.find(2);
+		Produto p3 = produtoService.find(3);
+
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1,p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1,800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
+		
+		
+	}
 	
 	public void carregarPedido() throws ParseException {
 		

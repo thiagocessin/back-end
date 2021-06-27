@@ -2,7 +2,14 @@ package com.demo.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+//import javax.validation.constraints.NotEmpty;
+
 import com.demo.domain.Categoria;
+
 
 public class CategoriaDTO  implements Serializable {// serializable - objetos podem ser convertidos para array de bytes
 
@@ -11,6 +18,8 @@ public class CategoriaDTO  implements Serializable {// serializable - objetos po
 	
 	private Integer id;
 
+	@NotEmpty(message = "Nome não pode ser vazio")
+	@Length(min = 5, max = 50, message = "Tamanho deve estar entre 5 e 50")
 	private String nome;
 	
 	

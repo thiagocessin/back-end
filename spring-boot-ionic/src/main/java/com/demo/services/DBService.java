@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.demo.domain.Categoria;
 import com.demo.domain.Cidade;
@@ -32,6 +33,7 @@ import com.demo.repositories.PagamentoRepository;
 import com.demo.repositories.PedidoRepository;
 import com.demo.repositories.ProdutoRepository;
 
+@Service
 public class DBService {
 
 	@Autowired

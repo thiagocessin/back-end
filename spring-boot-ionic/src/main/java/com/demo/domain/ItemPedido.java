@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class ItemPedido implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@JsonIgnore
 	@EmbeddedId
 	private ItemPedidoPK id = new ItemPedidoPK();// atributo composto
@@ -32,14 +32,22 @@ public class ItemPedido implements Serializable {
 		this.quantidade = quantidade;
 		this.preco = preco;
 	}
-	
+
 	public double getSubTotal() {
-		return (preco-desconto) *quantidade;
+		return (preco - desconto) * quantidade;
 	}
 
 	@JsonIgnore
 	public Pedido getPedido() {
 		return this.id.getPedido();
+	}
+
+	public void setPedido(Pedido pedido) {
+		id.setPedido(pedido);
+	}
+
+	public void setProduto(Produto produto) {
+		id.setProduto(produto);
 	}
 
 	public Produto getProduto() {
@@ -94,7 +102,5 @@ public class ItemPedido implements Serializable {
 		ItemPedido other = (ItemPedido) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
 
 }

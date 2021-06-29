@@ -3,6 +3,9 @@ package com.demo;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -95,6 +98,7 @@ public class CursomcApplication implements CommandLineRunner {
 		// carregarClienteEnderecosTelefones();
 		// carregarPedido();
 		// carregarItemPedido();
+		//carregaCategoriasProdutos();
 	}
 
 	public void carregarItemPedido() {
@@ -182,23 +186,25 @@ public class CursomcApplication implements CommandLineRunner {
 	}
 
 	public void carregaCategoriasProdutos() {
+		
+		List<Categoria> all = categoriaRepository.findAll();
+		Map<Integer, Categoria> map = new HashMap<>();
+		
+		for(Categoria c : all) {
+			map.put(c.getId(),c);
+		}
 
-		Categoria cat1 = new Categoria(null, "Informática");
-		Categoria cat2 = new Categoria(null, "Escritório");
-
-		Produto p1 = new Produto("Computador", 2000.00);
-		Produto p2 = new Produto("Impressora", 800.00);
-		Produto p3 = new Produto("Mouse", 80.00);
-
-		cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
-		cat2.getProdutos().addAll(Arrays.asList(p2));
-
-		p1.getCategorias().addAll(Arrays.asList(cat1));
-		p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
-		p3.getCategorias().addAll(Arrays.asList(cat1));
-
-		categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
-		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
+//		Produto p1 = new Produto("Mesa de Escritório", 300.00);
+//		map.get(1).getProdutos().add(p1);
+//		p1.getCategorias().addAll(Arrays.asList(map.get(1)));
+		
+		Produto p2 = new Produto("Luminária", 120.00);
+		map.get(8).getProdutos().add(p2);
+		p2.getCategorias().addAll(Arrays.asList(map.get(1), map.get(2), map.get(4)));
+		
+		
+		categoriaRepository.saveAll(all);
+		produtoRepository.saveAll(Arrays.asList(p2));
 
 	}
 

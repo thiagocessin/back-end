@@ -1,5 +1,6 @@
 package br.com.tcessin.financys.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +18,12 @@ public class CategoriaService {
 	private CategoriaRepository repo;
 
 	public List<Categoria> findAll() {
-		return repo.findAll();
+
+		List<Categoria> lista = new ArrayList<>();
+
+		repo.findAll().forEach(lista::add);
+
+		return lista;
 	}
 
 	public Categoria insert(Categoria obj) {
@@ -32,6 +38,24 @@ public class CategoriaService {
 	
 
 	public Categoria fromDTO(CategoriaDTO dto) {
-		return new Categoria(dto.getId(), dto.getNome(), dto.getDescricao());
+		return new Categoria(dto.getId(), dto.getName(), dto.getDescription());
 	}
+	
+	public void delete(Categoria categoria) {
+		repo.delete(categoria);
+	}
+
+	public void update(Categoria obj) {
+		
+	}
+
+	public void update(Categoria obj, CategoriaDTO categoriaNew) {
+		
+		obj.setName(categoriaNew.getName());
+		obj.setDescription(categoriaNew.getDescription());
+		
+		repo.save(obj);
+		
+	}
+	
 }

@@ -25,9 +25,9 @@ public class Categoria implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String nome;
+	private String name;
 
-	private String descricao;	
+	private String description;	
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "categoria")
@@ -41,11 +41,9 @@ public class Categoria implements Serializable {
 	public Categoria(Long id, String nome, String descricao) {
 		super();
 		this.id = id;
-		this.nome = nome;
-		this.descricao = descricao;
+		this.name = nome;
+		this.description = descricao;
 	}
-
-	
 
 	public Long getId() {
 		return id;
@@ -55,25 +53,39 @@ public class Categoria implements Serializable {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public List<Lancamento> getLancamentos() {
+		return lancamentos;
+	}
+
+	public void setLancamentos(List<Lancamento> lancamentos) {
+		this.lancamentos = lancamentos;
+	}
+
+	@Override
+	public String toString() {
+		return "Categoria [id=" + id + ", name=" + name + ", description=" + description + ", lancamentos="
+				+ lancamentos + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(description, id, lancamentos, name);
 	}
 
 	@Override
@@ -85,13 +97,13 @@ public class Categoria implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Categoria other = (Categoria) obj;
-		return Objects.equals(id, other.id);
+		return Objects.equals(description, other.description) && Objects.equals(id, other.id)
+				&& Objects.equals(lancamentos, other.lancamentos) && Objects.equals(name, other.name);
 	}
 
-	@Override
-	public String toString() {
-		return "Categoria [id=" + id + ", nome=" + nome + ", descricao=" + descricao + "]";
-	}
+	
+
+	
 	
 	
 
